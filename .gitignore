@@ -1,0 +1,21 @@
+# Datasets
+dataset/
+*.zip
+*.csv000
+*.tsv
+*.json
+*.jsonl
+
+# Checkpoints
+checkpoints/
+weights/
+
+# System
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+
+# Environment
+.env
+venv/
+env/

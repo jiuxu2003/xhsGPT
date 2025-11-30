@@ -1,0 +1,14 @@
+pandas
+# PyTorch 2.4.0+ with CUDA 12.1+ is recommended for Qwen2.5-VL
+# Install command: pip install torch>=2.4.0 torchvision>=0.19.0 torchaudio>=2.4.0 -i https://pypi.tuna.tsinghua.edu.cn/simple --cache-dir ~/.cache/pip
+torch>=2.4.0
+torchvision>=0.19.0
+torchaudio>=2.4.0
+pillow
+einops
+requests
+tqdm
+openai
+ms-swift[llm]>=2.4.0
+modelscope
+qwen-vl-utils
