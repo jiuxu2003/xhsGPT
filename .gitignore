@@ -19,3 +19,4 @@ __pycache__/
 .env
 venv/
 env/
+6_export_dataset_manifest.py

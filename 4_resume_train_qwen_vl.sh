@@ -1,34 +1,22 @@
 #!/bin/bash
 
-# Qwen2-VL-7B Fine-tuning Script using ms-swift
-# 适配 RTX 4090 (24GB VRAM)
+# 检查是否提供了 checkpoint 路径
+if [ -z "$1" ]; then
+    echo "错误: 请提供 checkpoint 路径"
+    echo "用法: ./4_resume_train_qwen_vl.sh /path/to/checkpoint-xxx"
+    exit 1
+fi
 
-# 1. 基础配置
+CHECKPOINT_PATH="$1"
 PROJECT_ROOT=$(pwd)
 DATA_FILE="$PROJECT_ROOT/qwen_vl_train_data.jsonl"
 OUTPUT_DIR="$PROJECT_ROOT/checkpoints/qwen2.5_vl_xhs"
 MODEL_ID="Qwen/Qwen2.5-VL-7B-Instruct"
 
-# 2. 启动训练
-# ms-swift 会自动处理模型下载和加载
-# 使用 LoRA 微调
-
-echo "开始训练 Qwen2.5-VL-7B..."
-echo "数据文件: $DATA_FILE"
+echo "从 checkpoint 恢复训练: $CHECKPOINT_PATH"
 
 # 设置 CUDA 可见设备
 export CUDA_VISIBLE_DEVICES=0
-
-# swift sft 参数说明:
-# --model_type: 指定模型类型 (swift 会自动识别)
-# --dataset: 数据集路径
-# --sft_type: lora
-# --target_modules: 指定 LoRA 目标模块 (ALL 表示所有线性层)
-# --batch_size: 显存优化，设为 1
-# --gradient_accumulation_steps: 梯度累积，设为 16 (相当于 batch_size 16)
-# --learning_rate: 学习率
-# --num_train_epochs: 训练轮数
-# --max_length: 序列最大长度 (Qwen2.5-VL 支持长序列，但为了显存设为 2048 或更小)
 
 swift sft \
     --model "$MODEL_ID" \
@@ -53,6 +41,5 @@ swift sft \
     --warmup_ratio 0.03 \
     --dataloader_num_workers 4 \
     --report_to swanlab \
-    --logging_first_step true
-
-echo "训练完成！模型保存在: $OUTPUT_DIR"
+    --logging_first_step true \
+    --resume_from_checkpoint "$CHECKPOINT_PATH"

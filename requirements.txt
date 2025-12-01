@@ -12,3 +12,6 @@ openai
 ms-swift[llm]>=2.4.0
 modelscope
 qwen-vl-utils
+msgspec
+swanlab
+decord
